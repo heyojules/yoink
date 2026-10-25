@@ -3,11 +3,12 @@
 </p>
 
 <p align="center">
-  <strong>Grab it. Paste it. Done.</strong><br>
-  A tiny macOS screenshot tool that stays out of your way.
+  <strong>Take a screenshot. Paste it immediately.</strong><br>
+  Press your hotkey, select an area, then press ⌘V where you need it.
 </p>
 
 <p align="center">
+  <a href="#why-yoink">Why Yoink?</a> ·
   <a href="#install">Install</a> ·
   <a href="#use">Use</a> ·
   <a href="#under-the-hood">Under the hood</a>
@@ -15,13 +16,21 @@
 
 ---
 
-### One hotkey. Three things.
+## Why Yoink?
 
-| Select | Save | Paste |
-| :--- | :--- | :--- |
-| Grab a region or window with the native macOS selector. | A PNG lands in `~/Desktop/screenshots/`. | The image and its file URL are already on your clipboard. |
+You want to show something on your screen in a chat, bug report, document, or terminal-based coding assistant. Take the screenshot, switch back, and paste. No finding the file or dragging it into the app.
 
-No uploads. No Dock icon. No menu bar. **Not memory-only:** screenshots stay on disk until you delete them.
+macOS already supports screenshots:
+
+- **⌘⇧4** saves a file by default.
+- **⌃⌘⇧4** copies an image to the clipboard instead.
+- **Yoink** saves the file **and** puts both the image and its file URL on the clipboard in one capture.
+
+Image-aware apps can paste the image. Compatible terminals can paste the saved file's path, which tools such as Claude Code can use as an image attachment. Terminal support varies.
+
+If you only need to paste images into regular apps, the built-in **⌃⌘⇧4** may be enough. Yoink is useful when you also want a saved copy or paste screenshots into terminal tools.
+
+Files go to `~/Desktop/screenshots/`. **Not memory-only:** they stay there until you delete them. No uploads, Dock icon, or menu bar.
 
 ## Install
 
@@ -39,7 +48,7 @@ Starts immediately and at login. Allow **Screen Recording** in **System Settings
 
 ## Use
 
-Press your hotkey, select, then paste into a chat, document, or compatible terminal.
+Press your hotkey, select a region or window, then press **⌘V** in the destination app. The screenshot is already on your clipboard.
 
 <p align="center">
   <kbd>Drag</kbd> select a region &nbsp; · &nbsp;
