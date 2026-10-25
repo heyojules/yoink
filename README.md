@@ -1,14 +1,31 @@
-# Yoink
+<p align="center">
+  <img src="assets/yoink-banner.png" alt="Yoink — a tiny macOS screenshot tool" width="800">
+</p>
 
-A tiny macOS screenshot tool. Select a region, then paste it anywhere that accepts images.
+<p align="center">
+  <strong>Grab it. Paste it. Done.</strong><br>
+  A tiny macOS screenshot tool that stays out of your way.
+</p>
 
-- Copies PNG bytes and a file URL to your clipboard.
-- Saves a copy in `~/Desktop/screenshots/` — not memory-only.
-- Runs in the background with a global hotkey. No Dock icon, menu bar, or uploads.
+<p align="center">
+  <a href="#install">Install</a> ·
+  <a href="#use">Use</a> ·
+  <a href="#under-the-hood">Under the hood</a>
+</p>
+
+---
+
+### One hotkey. Three things.
+
+| Select | Save | Paste |
+| :--- | :--- | :--- |
+| Grab a region or window with the native macOS selector. | A PNG lands in `~/Desktop/screenshots/`. | The image and its file URL are already on your clipboard. |
+
+No uploads. No Dock icon. No menu bar. **Not memory-only:** screenshots stay on disk until you delete them.
 
 ## Install
 
-Requires macOS, Rust 1.85+ (edition 2024), and Xcode Command Line Tools.
+**macOS** · **Rust 1.85+** (edition 2024) · **Xcode Command Line Tools**
 
 ```sh
 git clone https://github.com/heyojules/yoink.git
@@ -16,13 +33,19 @@ cd yoink
 make install HOTKEY=cmd+shift+2
 ```
 
-Starts now and at login. Allow **Screen Recording** in System Settings → Privacy & Security, then run `make restart`.
+Starts immediately and at login. Allow **Screen Recording** in **System Settings → Privacy & Security**, then run `make restart`.
 
-Without `HOTKEY`, the default is `cmd+shift+4`. Disable the matching macOS screenshot shortcut before using it; Yoink does not change system shortcuts.
+> **Prefer ⌘⇧4?** Run `make install` without `HOTKEY`. Disable the matching macOS screenshot shortcut first. Yoink does not change system shortcuts for you.
 
 ## Use
 
-Press your hotkey. **Drag** to select, **Space** for a window, **Esc** to cancel. Paste into a chat, document, or compatible terminal.
+Press your hotkey, select, then paste into a chat, document, or compatible terminal.
+
+<p align="center">
+  <kbd>Drag</kbd> select a region &nbsp; · &nbsp;
+  <kbd>Space</kbd> select a window &nbsp; · &nbsp;
+  <kbd>Esc</kbd> cancel
+</p>
 
 ```sh
 ~/.local/bin/yoink  # capture once; print the saved path
@@ -33,8 +56,17 @@ make uninstall     # remove the service and binary; keep screenshots
 
 Re-enable any macOS shortcut you disabled after uninstalling.
 
-## How it works
+## Under the hood
 
-Rust calls macOS `screencapture -i`. AppKit writes the image and file URL to the clipboard. A global hotkey triggers capture; launchd keeps the service running.
+Rust calls macOS `screencapture -i`. AppKit puts PNG bytes and a file URL on the clipboard. A global hotkey triggers capture; launchd keeps the background service running.
 
-Installation uses ad-hoc signing, so rebuilds may require granting permission again. For stable signing, pass `SIGN_ID="Your signing identity"` to `make install`.
+<details>
+<summary><strong>A note on signing</strong></summary>
+
+Installation uses ad-hoc signing, so rebuilds may require granting Screen Recording permission again. For a stable signing identity:
+
+```sh
+make install HOTKEY=cmd+shift+2 SIGN_ID="Your signing identity"
+```
+
+</details>
