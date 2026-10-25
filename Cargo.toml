@@ -1,0 +1,18 @@
+[package]
+name = "yoink"
+description = "A tiny macOS screenshot tool: select, save, and copy to the clipboard."
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.104"
+chrono = "0.4.45"
+global-hotkey = "0.9.0"
+objc2 = "0.6.5"
+objc2-app-kit = { version = "0.3.2", default-features = false, features = ["NSPasteboard", "NSApplication", "NSResponder", "NSRunningApplication"] }
+objc2-foundation = "0.3.2"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
