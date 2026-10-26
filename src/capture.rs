@@ -11,7 +11,9 @@ use crate::clipboard;
 pub fn capture() -> Result<Option<PathBuf>> {
     let dir = screenshots_dir()?;
     std::fs::create_dir_all(&dir).with_context(|| format!("creating {}", dir.display()))?;
-    let stem = Local::now().format("screenshot-%Y-%m-%d-%H.%M.%S").to_string();
+    let stem = Local::now()
+        .format("screenshot-%Y-%m-%d-%H.%M.%S")
+        .to_string();
     let path = unique_path(&dir, &stem);
 
     // -i: interactive selection (Space toggles window mode, Esc cancels).
@@ -30,7 +32,9 @@ pub fn capture() -> Result<Option<PathBuf>> {
         Err(e) if e.kind() == std::io::ErrorKind::NotFound => return Ok(None),
         Err(e) => return Err(e).with_context(|| format!("reading {}", path.display())),
     };
-    clipboard::copy_png(&png, &path)?;
+    // The file is already saved; name it so a clipboard failure doesn't hide where it went.
+    clipboard::copy_png(&png, &path)
+        .with_context(|| format!("copying {} to the clipboard", path.display()))?;
     Ok(Some(path))
 }
 

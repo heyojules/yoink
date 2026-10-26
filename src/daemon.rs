@@ -21,7 +21,9 @@ pub fn run(hotkey: &str) -> Result<()> {
 
     // Must outlive the event loop; dropping it unregisters the hotkey.
     let manager = GlobalHotKeyManager::new().context("creating hotkey manager")?;
-    manager.register(hotkey).context("registering hotkey (already taken?)")?;
+    manager
+        .register(hotkey)
+        .context("registering hotkey (already taken?)")?;
 
     GlobalHotKeyEvent::set_event_handler(Some(on_hotkey));
     eprintln!("yoink: listening on {hotkey}");
@@ -44,7 +46,9 @@ fn ensure_screen_recording_access() {
         return;
     }
     unsafe { CGRequestScreenCaptureAccess() };
-    eprintln!("yoink: no Screen Recording access; allow yoink in System Settings, then `make restart`");
+    eprintln!(
+        "yoink: no Screen Recording access; allow yoink in System Settings, then `make restart`"
+    );
 }
 
 /// Set while a selection is on screen, so repeated presses don't stack selectors.
