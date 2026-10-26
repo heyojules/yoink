@@ -10,8 +10,21 @@ anyhow = "1.0.104"
 chrono = "0.4.45"
 global-hotkey = "0.9.0"
 objc2 = "0.6.5"
-objc2-app-kit = { version = "0.3.2", default-features = false, features = ["NSPasteboard", "NSApplication", "NSResponder", "NSRunningApplication"] }
-objc2-foundation = { version = "0.3.2", default-features = false, features = ["std", "NSData", "NSString", "NSURL"] }
+objc2-app-kit = { version = "0.3.2", default-features = false, features = [
+    "NSAccessibility", "NSApplication", "NSColor", "NSEvent", "NSGraphics", "NSImage", "NSPanel",
+    "NSPasteboard", "NSResponder", "NSRunningApplication", "NSScreen", "NSView", "NSWindow",
+    "NSWorkspace", "objc2-core-foundation", "objc2-quartz-core",
+] }
+objc2-foundation = { version = "0.3.2", default-features = false, features = [
+    "std", "NSArray", "NSData", "NSEnumerator", "NSGeometry", "NSString", "NSURL", "NSValue",
+] }
+# Core Animation and GCD drive the capture pop (src/pop.rs).
+dispatch2 = { version = "0.3.1", default-features = false, features = ["std", "objc2"] }
+objc2-core-graphics = { version = "0.3.2", default-features = false, features = ["std", "CGColor", "CGPath"] }
+objc2-quartz-core = { version = "0.3.2", default-features = false, features = [
+    "std", "CAAnimation", "CALayer", "CAMediaTiming", "CAMediaTimingFunction", "CAShapeLayer",
+    "objc2-core-foundation", "objc2-core-graphics",
+] }
 
 [profile.release]
 lto = true

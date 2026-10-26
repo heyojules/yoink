@@ -3,6 +3,7 @@
 mod capture;
 mod clipboard;
 mod daemon;
+mod pop;
 
 use anyhow::{Result, bail};
 

@@ -7,6 +7,7 @@ use objc2::MainThreadMarker;
 use objc2_app_kit::{NSApplication, NSApplicationActivationPolicy};
 
 use crate::capture;
+use crate::pop::{self, Pop};
 
 /// Registers a global hotkey and runs the AppKit event loop, which delivers it. Never returns.
 pub fn run(hotkey: &str) -> Result<()> {
@@ -16,8 +17,8 @@ pub fn run(hotkey: &str) -> Result<()> {
 
     let mtm = MainThreadMarker::new().context("daemon must run on the main thread")?;
     let app = NSApplication::sharedApplication(mtm);
-    // Background-only: no Dock icon, no menu bar.
-    app.setActivationPolicy(NSApplicationActivationPolicy::Prohibited);
+    // No Dock icon, no menu bar, but still allowed to show the capture pop.
+    app.setActivationPolicy(NSApplicationActivationPolicy::Accessory);
 
     // Must outlive the event loop; dropping it unregisters the hotkey.
     let manager = GlobalHotKeyManager::new().context("creating hotkey manager")?;
@@ -58,10 +59,19 @@ fn on_hotkey(event: GlobalHotKeyEvent) {
     if event.state != HotKeyState::Pressed || CAPTURING.swap(true, Ordering::AcqRel) {
         return;
     }
+    // Carbon delivers hotkeys on the main thread; clear any pop so it isn't in the way.
+    if let Some(mtm) = MainThreadMarker::new() {
+        pop::dismiss(mtm);
+    }
     // Off the main thread so the event loop stays responsive while the user selects.
     std::thread::spawn(|| {
-        if let Err(e) = capture::capture() {
-            eprintln!("yoink: {e:#}");
+        match capture::capture() {
+            Ok(Some(path)) => pop::show(Pop::Saved(path)),
+            Ok(None) => {}
+            Err(e) => {
+                eprintln!("yoink: {e:#}");
+                pop::show(Pop::Failed);
+            }
         }
         CAPTURING.store(false, Ordering::Release);
     });

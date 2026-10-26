@@ -30,7 +30,7 @@ Starts now and at login. Allow **Screen Recording** in System Settings → Priva
 
 ## Use
 
-**Hotkey → select → ⌘V.** That's it.
+**Hotkey → select → ⌘V.** That's it. A thumbnail pops at your cursor once it's copied; a red shake means it failed (`make logs`).
 
 <kbd>Drag</kbd> region · <kbd>Space</kbd> window · <kbd>Esc</kbd> cancel
 
